@@ -10,7 +10,7 @@
 !.yarn/releases
 !.yarn/versions
 /fonts
-/perbaikan.md
+perbaikan.md
 
 # testing
 /coverage

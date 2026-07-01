@@ -1,64 +1,68 @@
 "use client";
-
 import { createContext, useContext, useState, useEffect } from 'react';
+import { useAuth } from './Authcontext';
 
-const CartContext = createContext()
+const CartContext = createContext();
 
 export function CartProvider({children}) {
+  const { user } = useAuth()
+  const cartKey = user ? `revoshop_cart_${user.id}` : 'revoshop_cart_guest'
+  
+  const [cart, setCart] = useState([])
 
-	const [cart, setCart] = useState([]) /*nilai yang bernilai null tapi dalam bentuk array aja*/
+  useEffect(() => {
+    const revoCart = localStorage.getItem(cartKey);
+    if (revoCart) {
+      setCart(JSON.parse(revoCart));
+    } else {
+      setCart([])
+    }
+  }, [user])
 
+  const simpanKeStorage = (itemBaru) => {
+    setCart(itemBaru);
+    localStorage.setItem(cartKey, JSON.stringify(itemBaru));
+  };
 
-	useEffect(() => {
-		const revoCart = localStorage.getItem('revoshop_cart');
+  const addItem = (produk) => {
+    const produkisAvailable = cart.find((item) => item.id === produk.id);
+    if (produkisAvailable) {
+      const updateProduk = cart.map((item) => item.id === produk.id ? { ...item, quantity: item.quantity + 1 } : item);
+      simpanKeStorage(updateProduk)
+    } else {
+      const updateCart = [...cart, {...produk, quantity: 1 }];
+      simpanKeStorage(updateCart);
+    }
+  };
 
-		if (revoCart) {
-			setCart(JSON.parse(revoCart));
-		}
-	}, [])
+  const hapusDariKeranjang = (idProduk) => {
+    const updateCart = cart.filter((item) => item.id !== idProduk);
+    simpanKeStorage(updateCart);
+  }
 
+  const kurangiItem = (idProduk) => {
+  const produk = cart.find((item) => item.id === idProduk)
+    if (produk.quantity === 1) {
+      hapusDariKeranjang(idProduk)
+    } else {
+    const updateCart = cart.map((item) => 
+      item.id === idProduk ? {...item, quantity: item.quantity - 1} : item
+    )
+    simpanKeStorage(updateCart)
+  }
+}
 
-	const simpanKeStorage = (itemBaru) => {
+  const kosongkanKeranjang = () => {
+    simpanKeStorage([]);
+  };
 
-    	setCart(itemBaru);
-    	localStorage.setItem('revoshop_cart', JSON.stringify(itemBaru));
-  	};
+  return (
+    <CartContext.Provider value={{cart, addItem, kurangiItem, hapusDariKeranjang, kosongkanKeranjang}}>
+      {children}
+    </CartContext.Provider>
+  )
+}
 
-
-  	const addItem = (produk) => {
-  		const produkisAvailable = cart.find((item) => item.id === produk.id);
-
-
-  		if (produkisAvailable) {
-  			const updateProduk = cart.map((item) => item.id === produk.id ? { ...item, quantity: item.quantity + 1 } : item);
-  			simpanKeStorage(updateProduk)
-  		} else {
-  			const updateCart = [...cart, {...produk, quantity: 1 }];
-  			simpanKeStorage(updateCart);
-  		}
-  	};
-
-
-
-
-  		const hapusDariKeranjang = (idProduk) => {
-    	const updateCart = cart.filter((item) => item.id !== idProduk);
-    		simpanKeStorage(updateCart);
-  		}
-
-  		  const kosongkanKeranjang = () => {
-    		simpanKeStorage([]);
-  		};
-
-
-
-	return (
-		<CartContext.Provider value={{cart, addItem, hapusDariKeranjang, kosongkanKeranjang}}>
-			{children}
-		</CartContext.Provider>
-		)
-	}
-	
-	export function useCart() {
-	return useContext(CartContext)
-	}
+export function useCart() {
+  return useContext(CartContext)
+}

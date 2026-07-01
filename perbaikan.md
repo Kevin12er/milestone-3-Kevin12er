@@ -22,3 +22,13 @@ Uses form validation to prevent invalid submissions — ⚠️ Pass dengan Catat
 
 Updates UI dynamically when CRUD actions are performed — ⚠️ Pass dengan Catatan: Secara struktural,  kode update state sudah ada — setProducts(products.map(...)) untuk edit,  setProducts([newProduct,  ...products]) untuk create. Namun karena URL API salah,  operasi ini tidak pernah berhasil di praktik. Logika UI update-nya benar,  eksekusinya tidak.
 
+
+
+</->MOCK data (admin); ---> dashboard, CRUD
+- ROLE Dipisah (kalau user yang login, halaman dashboard tidak ditamppilkan, kalau admin yang login dashboard tampil, (produk sama cart tidak wajib))
+- klik tambah produk itu jangan redirect ke cart cukup gambar cartnya aja yang menapilkan angka produk
+- tombol minus di cart perbaiki
+- halaman checkout (ketika dklik, angka yang ada dicart menghilang)
+- angka dicart itu bukan quantity dari barang yang dipesan 
+- keranjang tidak terupdate walau sudah login dengan akun yang berbeda 
+

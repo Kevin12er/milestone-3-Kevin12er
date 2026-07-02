@@ -1,16 +1,23 @@
 import { NextResponse } from 'next/server';
 
 export function middleware(request) {
-  const isLoggedIn = request.cookies.get('revoshop_token');
-  const statusLogin = isLoggedIn?.value;
+  const sessionCookie = request.cookies.get('revoshop_session');
   const { pathname } = request.nextUrl;
 
-
-  if (!statusLogin && (pathname === '/checkout' || pathname === '/dashboard')) {
-    return NextResponse.redirect(new URL('/login', request.url));
+  if (!sessionCookie) {
+    if (['/dashboard', '/cart', '/checkout'].includes(pathname)) {
+      return NextResponse.redirect(new URL('/login', request.url));
+    }
+    return NextResponse.next();
   }
 
-  if (statusLogin && pathname === '/login') {
+  const session = JSON.parse(sessionCookie.value);
+
+  if (pathname === '/login') {
+    return NextResponse.redirect(new URL('/', request.url));
+  }
+
+  if (pathname === '/dashboard' && session.role !== 'admin') {
     return NextResponse.redirect(new URL('/', request.url));
   }
 
@@ -18,5 +25,5 @@ export function middleware(request) {
 }
 
 export const config = {
-  matcher: ['/', '/login', '/checkout', '/cart', '/dashboard'],
+  matcher: ['/login', '/dashboard', '/cart', '/checkout'],
 };

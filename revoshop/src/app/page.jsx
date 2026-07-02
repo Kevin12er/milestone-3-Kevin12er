@@ -5,10 +5,12 @@ import Link from "next/link";
 import { useState, useEffect } from 'react';
 import { useCart } from '@/app/context/Cartcontext'; 
 
+
 export default function Home() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const { addItem } = useCart();
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -99,13 +101,11 @@ export default function Home() {
                   Lihat Produk
                 </Link>
                 
-                <Link 
-                  onClick={() => addItem(product)} 
-                  href="/cart" 
-                  className="flex items-center gap-1 text-xs cursor-pointer border border-white/20 rounded-lg px-3 py-2 hover:bg-white/10 transition-colors whitespace-nowrap text-white"
-                >
-                  + Tambah
-                </Link>
+                <button 
+                    onClick={() => {
+                    addItem(product)}} 
+                    className="flex items-center gap-1 text-xs cursor-pointer border border-white/20 rounded-lg px-3 py-2 hover:bg-white/10 transition-colors whitespace-nowrap text-white"
+                > + Tambah </button>
               </div>
             </div>
 

@@ -35,7 +35,7 @@ function NavigationHeader() {
   const [sudahLogin, setSudahLogin] = useState(false);
 
 
-  const totalItemDiKeranjang = cart ? cart.length((total, item) => total + item.quantity, 0) : 0;
+  const totalItemDiKeranjang = cart ? cart.length : 0;
 
 
   useEffect(() => {

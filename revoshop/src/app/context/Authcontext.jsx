@@ -1,39 +1,40 @@
-"use client";
+'use client';
 import { createContext, useContext, useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
-const AuthContext = createContext()
+const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState(null);
+  const router = useRouter();
 
-  // Load user dari localStorage saat pertama kali
   useEffect(() => {
-    const savedUser = localStorage.getItem('revoshop_user')
-    if (savedUser) {
-      setUser(JSON.parse(savedUser))
-    }
-  }, [])
+    const checkSession = async () => {
+      try {
+        const res = await fetch('/api/auth/me');
+        if (res.ok) {
+          const userData = await res.json();
+          setUser(userData);
+        }
+      } catch {
+      }
+    };
+    checkSession();
+  }, []);
 
-  // Simpan user ke localStorage setiap kali berubah
-  const loginUser = (userData) => {
-    setUser(userData)
-    localStorage.setItem('revoshop_user', JSON.stringify(userData))
-  }
-
-  const logout = () => {
-    setUser(null)
-    localStorage.removeItem('revoshop_user')
-    document.cookie = "revoshop_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"
-    window.location.href = '/login'
-  }
+  const logout = async () => {
+    await fetch('/api/auth/logout', { method: 'POST' });
+    setUser(null);
+    router.push('/login');
+  };
 
   return (
-    <AuthContext.Provider value={{ user, setUser, loginUser, logout }}>
+    <AuthContext.Provider value={{ user, setUser, logout }}>
       {children}
     </AuthContext.Provider>
-  )
+  );
 }
 
 export function useAuth() {
-  return useContext(AuthContext)
+  return useContext(AuthContext);
 }

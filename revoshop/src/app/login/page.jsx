@@ -10,7 +10,7 @@ export default function LoginPage() {
 
   const { register, handleSubmit } = useForm();
   const loginRouter = useRouter();
-  const { setUser } = useAuth();
+  const { loginUser } = useAuth()  
 
   const [isLoading, setLoading] = useState(false)
 
@@ -39,7 +39,7 @@ export default function LoginPage() {
     };
 
     const hasilRespon = await dataRespon.json();
-    setUser(hasilRespon)
+    loginUser(hasilRespon)
 
     const tigaHari = 3 * 24 * 60 * 60;
     document.cookie = `revoshop_token=${hasilRespon.access_token}; path=/; max-age=${tigaHari}; SameSite=Lax` 

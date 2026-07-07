@@ -7,9 +7,10 @@ import ProdukTerkait from "./produkterkait"
 
 export default function PageId({params}) {
 
-        const { id } = use(params)
-        const [product, setProduct] = useState(null)
-        const [loading, setLoading] = useState(true)
+        const { id } = use(params);
+        const [product, setProduct] = useState(null);
+        const [loading, setLoading] = useState(true);
+        const [error, setError] = useState(null);
 
         useEffect(() => {
 
@@ -41,6 +42,7 @@ export default function PageId({params}) {
 }, [])
 
 
+    if (error) return <p className="text-black font-bold text-center py-8"> {error} </p>
     if (loading) return <p className="text-(--teks) text-center text-sm md:text-2xl py-8">Memuat halaman...</p>
       
     return (

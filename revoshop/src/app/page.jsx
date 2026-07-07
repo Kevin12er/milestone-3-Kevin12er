@@ -10,6 +10,7 @@ export default function Home() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const { addItem } = useCart();
+  const [error, setError] = useState(null)
 
 
   useEffect(() => {
@@ -42,6 +43,8 @@ export default function Home() {
     fetchData();
   }, []);
 
+
+  if (error) return <p className="text-black font-bold text-center py-8"> {error} </p>
   if (loading) return <p className="text-(--teks) text-center text-sm md:text-2xl py-8">Halaman sedang dimuat...</p>;
   
   return (

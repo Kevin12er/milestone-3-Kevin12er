@@ -15,6 +15,13 @@ export default function RegisterPage() {
 
   const berhasilMasuk = async (info) => {
 
+
+  if (info.password !== info.confirmPassword) {
+    alert('password tidak cocok');
+    return;
+  }
+
+
   const dataKirim = {
     name: info.email.split('@')[0],
     email: info.email,

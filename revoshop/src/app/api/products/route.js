@@ -1,4 +1,4 @@
-
+import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 
 
@@ -23,6 +23,13 @@ export async function GET() {
 
 /*POST*/
 export async function POST(request) {
+
+  const cookiesToko = await cookies();
+  if (!cookiesToko.get('revoshop_session')) {
+    return NextResponse.json({ error: 'Unatuhorized' }, { status: 401 })
+  } 
+
+
   try {
     const bodyData = await request.json();
 

@@ -70,7 +70,7 @@ export default function DashboardAdmin() {
           return;
         }
 
-        await fetch(`https://api.escuelajs.co/api/v1/products/${form.id}`, {
+        await fetch(`/api/products/${form.id}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -99,7 +99,7 @@ export default function DashboardAdmin() {
 
     } else {
       try {
-        const res = await fetch('https://api.escuelajs.co/api/v1/products', {
+        const res = await fetch('/api/products', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(dataKirim)
@@ -126,7 +126,7 @@ export default function DashboardAdmin() {
   const tanganiHapus = async (id) => {
     if (!confirm('Apakah Anda yakin ingin menghapus produk ini?')) return;
     try {
-      const res = await fetch(`https://api.escuelajs.co/api/v1/products/${id}`, {
+      const res = await fetch(`/api/products/${id}`, {
         method: 'DELETE'
       });
       

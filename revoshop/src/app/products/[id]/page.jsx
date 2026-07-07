@@ -39,7 +39,7 @@ export default function PageId({params}) {
 
   fetchData()
 
-}, [])
+}, [id])
 
 
     if (error) return <p className="text-black font-bold text-center py-8"> {error} </p>

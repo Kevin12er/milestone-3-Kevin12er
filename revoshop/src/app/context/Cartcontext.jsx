@@ -6,7 +6,6 @@ const CartContext = createContext();
 
 export function CartProvider({children}) {
   const { user } = useAuth();
-  console.log(user)
   const cartKey = user ? `revoshop_cart_${user.id}` : 'revoshop_cart_guest';
   
   const [cart, setCart] = useState([])

@@ -41,9 +41,6 @@ export default function LoginPage() {
     const hasilRespon = await dataRespon.json();
     setUser(hasilRespon)
 
-    const tigaHari = 3 * 24 * 60 * 60;
-    document.cookie = `revoshop_token=${hasilRespon.access_token}; path=/; max-age=${tigaHari}; SameSite=Lax` 
-
     loginRouter.push('/')
 
   } catch (error) {
